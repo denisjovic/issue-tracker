@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import IssueItem from "./IssueItem";
 
-export default function IssuesList() {
-  const issuesQuery = useQuery(["issues-list"], () =>
-    fetch("/api/issues").then((res) => res.json())
-  );
+export default function IssuesList({ labels }) {
+  const issuesQuery = useQuery(["issues-list", { labels }], () => {
+    const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
+    return fetch(`/api/issues?${labelsString}`).then((res) => res.json());
+  });
   const { data, isLoading, isError } = issuesQuery;
   if (isError) return <p>Something went wrong: {issuesQuery.error.message}</p>;
   return (
