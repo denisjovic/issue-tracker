@@ -23,9 +23,9 @@ export default function IssueItem({
     <li>
       <div>
         {status === "canceled" || status === "done" ? (
-          <GoIssueClosed style={{ color: "red" }} />
+          <GoIssueClosed style={{ color: "green" }} />
         ) : (
-          <GoIssueOpened style={{ color: "green" }} />
+          <GoIssueOpened style={{ color: "red" }} />
         )}
       </div>
       <div className={"issue-content"}>
