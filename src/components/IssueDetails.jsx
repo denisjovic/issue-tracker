@@ -6,15 +6,17 @@ import { relativeDate } from "../helpers/relativeDate";
 
 function useIssueData(issueNumber) {
   return useQuery(["issue", issueNumber], () => {
-    return fetch(`/api/issues/${issueNumber}`).then((res) => res.json());
+    return fetch(`/api/issues/${issueNumber}`).then((res) =>
+      res.json().catch((err) => console.error("useIssueData query error", err))
+    );
   });
 }
 
 function useIssueComments(issueNumber) {
   return useQuery(["issues", issueNumber, "comments"], () => {
-    return fetch(`/api/issues/${issueNumber}/comments`).then((res) =>
-      res.json()
-    );
+    return fetch(`/api/issues/${issueNumber}/comments`)
+      .then((res) => res.json())
+      .catch((err) => console.error("useIssueComments query error", err));
   });
 }
 
