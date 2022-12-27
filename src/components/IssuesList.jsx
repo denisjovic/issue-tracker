@@ -23,7 +23,6 @@ export default function IssuesList({ labels, status }) {
     { enabled: searchValue.length > 0 }
   );
 
-  console.log("searchQuery", searchQuery.data);
   return (
     <div>
       <form
