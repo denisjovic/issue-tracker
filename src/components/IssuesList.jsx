@@ -4,13 +4,17 @@ import { useState } from "react";
 
 export default function IssuesList({ labels, status }) {
   const [searchValue, setSearchValue] = useState("");
-  const issuesQuery = useQuery(["issues-list", { labels, status }], () => {
-    const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
-    const statusString = status ? `status=${status}` : "";
-    return fetch(`/api/issues?${labelsString}${statusString}`)
-      .then((res) => res.json())
-      .catch((err) => console.error("issuesQuery error", err));
-  });
+  const issuesQuery = useQuery(
+    ["issues-list", { labels, status }],
+    () => {
+      const labelsString = labels.map((label) => `labels[]=${label}`).join("&");
+      const statusString = status ? `status=${status}` : "";
+      return fetch(`/api/issues?${labelsString}${statusString}`)
+        .then((res) => res.json())
+        .catch((err) => console.error("issuesQuery error", err));
+    },
+    { staleTime: 1000 * 60 * 1 }
+  );
   const { data, isLoading, isError } = issuesQuery;
   if (isError) return <p>Something went wrong: {issuesQuery.error.message}</p>;
 
