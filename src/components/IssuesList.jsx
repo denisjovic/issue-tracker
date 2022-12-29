@@ -12,7 +12,7 @@ export default function IssuesList({ labels, status }) {
       const statusString = status ? `status=${status}` : "";
       return fetchWithError(`/api/issues?${labelsString}${statusString}`);
     },
-    { staleTime: 1000 * 60 * 1, useErrorBoundary: true }
+    { useErrorBoundary: true }
   );
   const { data, isLoading, isError } = issuesQuery;
   if (isError) return <p>Something went wrong: {issuesQuery.error.message}</p>;
