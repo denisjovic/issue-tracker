@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IssueHeader } from "./IssueHeader";
 import { useUserData } from "../helpers/useUserData";
 import { relativeDate } from "../helpers/relativeDate";
+import fetchWithError from "../helpers/fetchWithError";
 
 function useIssueData(issueNumber) {
   return useQuery(["issue", issueNumber], () => {
@@ -13,11 +14,15 @@ function useIssueData(issueNumber) {
 }
 
 function useIssueComments(issueNumber) {
-  return useQuery(["issues", issueNumber, "comments"], () => {
-    return fetch(`/api/issues/${issueNumber}/comments`)
-      .then((res) => res.json())
-      .catch((err) => console.error("useIssueComments query error", err));
-  });
+  return useQuery(
+    ["issues", issueNumber, "comments"],
+    () => {
+      return fetchWithError(`/api/issues/${issueNumber}/comments`)
+        .then((res) => res.json())
+        .catch((err) => console.error("useIssueComments query error", err));
+    },
+    { useErrorBoundary: true }
+  );
 }
 
 function Comment({ comment, createdBy, createdDate }) {
