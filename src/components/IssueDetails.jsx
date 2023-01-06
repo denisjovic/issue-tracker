@@ -17,9 +17,7 @@ function useIssueComments(issueNumber) {
   return useQuery(
     ["issues", issueNumber, "comments"],
     () => {
-      return fetchWithError(`/api/issues/${issueNumber}/comments`)
-        .then((res) => res.json())
-        .catch((err) => console.error("useIssueComments query error", err));
+      return fetchWithError(`/api/issues/${issueNumber}/comments`);
     },
     { useErrorBoundary: true }
   );
