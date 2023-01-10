@@ -1,12 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { IssueHeader } from "./IssueHeader";
+import IssueStatus from "./IssueStatus";
 import { useUserData } from "../helpers/useUserData";
 import { relativeDate } from "../helpers/relativeDate";
 import fetchWithError from "../helpers/fetchWithError";
 
 function useIssueData(issueNumber) {
-  return useQuery(["issue", issueNumber], () => {
+  return useQuery(["issues", issueNumber], () => {
     return fetch(`/api/issues/${issueNumber}`).then((res) =>
       res.json().catch((err) => console.error("useIssueData query error", err))
     );
@@ -77,7 +78,12 @@ export default function IssueDetails() {
             <Comment key={comment.id} {...comment} />
           ))}
         </section>
-        <aside></aside>
+        <aside>
+          <IssueStatus
+            status={issueQuery.data.status}
+            issueNumber={issueQuery.data.number.toString()}
+          />
+        </aside>
       </main>
     </div>
   );
