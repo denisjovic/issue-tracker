@@ -7,30 +7,41 @@ import { Link } from "react-router-dom";
 export default function Issues({ label }) {
   const [labels, setLabels] = useState([]);
   const [status, setStatus] = useState("");
+  const [pageNum, setPageNum] = useState(1);
+
   return (
     <div>
       <main>
         <section>
           <h1>Issues</h1>
-          <IssuesList labels={labels} status={status} />
+          <IssuesList
+            labels={labels}
+            status={status}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
+          />
         </section>
         <aside>
           <LabelList
             selected={labels}
-            toggle={(label) =>
+            toggle={(label) => {
               setLabels((currentLabels) =>
                 currentLabels.includes(labels)
                   ? currentLabels.filter(
                       (currentLabel) => currentLabel !== label
                     )
                   : [...currentLabels, label]
-              )
-            }
+              );
+              setPageNum(1);
+            }}
           />
           <h3>Status</h3>
           <StatusSelect
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPageNum(1);
+            }}
           />
           <hr />
           <Link className="button" to="/add">
